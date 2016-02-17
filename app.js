@@ -54,19 +54,19 @@ app.post('/people', function(req, res) {
     var addPerson = {
         name: req.body.name,
         address: req.body.address,
-        city: req.city,
-        state: req.state,
-        zip_code: req.zip_code
+        city: req.body.city,
+        state: req.body.state,
+        zip_code: req.body.zip_code
     };
     pg.connect(connectionString, function(err, client) {
-        client.query('INSERT INTO people (name, address, city, state, zip_code) VALUES ($1, $2, $3, $4, $5)',
-        [addPerson.name, addPerson.location],
+        client.query('INSERT INTO people (name, address, city, state, zip_code) VALUES ($1, $2, $3, $4, $5);',
+        [addPerson.name, addPerson.address, addPerson.city, addPerson.state, addPerson.zip_code],
             function(err, result) {
                 if(err) {
                     console.log('Error inseting data: ', err);
                     res.send(false);
                 } else {
-                    res.send(true);
+                    res.send(result);
                 }
             });
     });
