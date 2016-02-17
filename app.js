@@ -58,10 +58,11 @@ app.post('/people', function(req, res) {
         state: req.body.state,
         zip_code: req.body.zip_code
     };
-    pg.connect(connectionString, function(err, client) {
+    pg.connect(connectionString, function(err, client, done) {
         client.query('INSERT INTO people (name, address, city, state, zip_code) VALUES ($1, $2, $3, $4, $5);',
         [addPerson.name, addPerson.address, addPerson.city, addPerson.state, addPerson.zip_code],
             function(err, result) {
+                done();
                 if(err) {
                     console.log('Error inseting data: ', err);
                     res.send(false);
